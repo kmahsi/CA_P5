@@ -25,6 +25,7 @@ module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memReadA
 	end
 	
 	always @(*) begin
+		Hit = 0; Miss = 0;
 		if( tag == word[index][131:129] && 1'b1 == word[index][128] ) begin
 			Hit = 1;
 			case(offset)
