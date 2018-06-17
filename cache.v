@@ -1,8 +1,10 @@
-module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memReadAddress);
+module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memAddress, memWriteAddress, memWriteCacheOutput);
 	input clock, memWrite;
 	input [127:0] dataIn;
 	input[14:0] cacheReadAddress; // This should be logarithm of number of blocks in memory
-	output reg [14:0] memReadAddress;
+	output reg [14:0] memAddress, memWriteAddress;
+	output memWriteCacheOutput;
+	assign memWriteCacheOutput = memWrite;
 	output reg [31:0] out;
 	output reg Hit, Miss;
 	reg [131:0]t;
@@ -26,6 +28,10 @@ module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memReadA
 	
 	always @(*) begin
 		Hit = 0; Miss = 0;
+		if( memWrite)begin
+			word[index][128] = 1'd0;
+			memAddress = memWriteAddress;
+		end
 		if( tag == word[index][131:129] && 1'b1 == word[index][128] ) begin
 			Hit = 1;
 			case(offset)
@@ -38,7 +44,7 @@ module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memReadA
 		end
 		else begin
 			Miss = 1;
-			memReadAddress = {tag, index, 2'd0};
+			memAddress = {tag, index, 2'd0};
 		end
 	end
 endmodule 
