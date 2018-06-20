@@ -10,23 +10,23 @@ module cacheTB();
   	wire [14:0] memAddress, memWriteAddress, memWriteAddressCacheOutput;
   	wire [127:0] dataIn;
   	wire [31:0] out;
-  	initial repeat (10) #70 clk = ~clk;
+  	initial repeat (1000) #1 clk = ~clk;
 
   	
-    integer i;
-    initial begin
+    integer i = 1023;
+    // initial begin
     	// #100
     	// rst = 0;
     	// cacheReadAddress = 15'd185;
     	// #40
     	// cacheReadAddress = 15'd189;
 
-      for ( i = 1024; i < 9216; i = i + 1) begin
-            #1
-            cacheReadAddress = i;
-      end
-
-  	end
+      // for ( i = 1024; i < 9216; i = i + 1) begin
+            
+      //       cacheReadAddress = i;
+      // end
+      always @(posedge clk) begin i = i + 1; cacheReadAddress = i; end
+  	// end
 
 	cache C (
 		.clock(clk), 

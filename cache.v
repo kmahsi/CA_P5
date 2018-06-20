@@ -26,9 +26,9 @@ module cache(clock, memWrite, cacheReadAddress, dataIn, out, Hit, Miss, memAddre
 		word[index][127:0] = dataIn;
 	end
 	
-	always @(cacheReadAddress) begin
+	always @(posedge clock) begin
 		Hit = 0; Miss = 0;
-		if( memWrite)begin
+		if(memWrite)begin
 			word[index][128] = 1'd0;
 			memAddress = memWriteAddress;
 		end
