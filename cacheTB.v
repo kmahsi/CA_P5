@@ -13,7 +13,7 @@ module cacheTB();
   	initial repeat (1000) #1 clk = ~clk;
 
   	
-    integer i = 1023;
+    integer i = 1024;
     // initial begin
     	// #100
     	// rst = 0;
@@ -25,13 +25,14 @@ module cacheTB();
             
       //       cacheReadAddress = i;
       // end
-      always @(posedge clk) begin i = i + 1; cacheReadAddress = i; end
+      always @(negedge clk) begin
+      if (~Miss) begin i = i + 1; cacheReadAddress = i; end end
   	// end
 
 	cache C (
 		.clock(clk), 
-		.memWrite(memWrite), 
-		.cacheReadAddress(cacheReadAddress), 
+		.memWrite(memWrite), 	
+		.cacheReadAddress(i), 
 		.dataIn(dataIn), 
 		.out(out), 
 		.Hit(Hit), 
